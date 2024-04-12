@@ -41,6 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.flatpages',
 
+    'rest_framework',
+
+
 
 ]
 
