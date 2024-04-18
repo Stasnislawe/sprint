@@ -8,6 +8,7 @@ class User(models.Model):
     """"Пользователи"""
     name = models.CharField(max_length=100, verbose_name='Имя')
     surname = models.CharField(max_length=100, verbose_name='Фамилия')
+    otc = models.CharField(max_length=100, verbose_name='Отчество')
     email = models.EmailField(max_length=100, verbose_name='Почта')
     phone = models.IntegerField(unique=True, verbose_name='Телефон')
 
@@ -37,20 +38,20 @@ class AddMount(models.Model):
     beauty_title = models.CharField(default='пер.', max_length=255, verbose_name='Красивое название')
     title = models.CharField(max_length=255, verbose_name='Название')
     other_titles = models.CharField(max_length=255, verbose_name='Другое название')
-    connect = models.CharField(max_length=1, default="")
+    connect = models.CharField(max_length=1, default="", blank=True, null=True)
     add_time = models.DateTimeField(auto_now_add=True, verbose_name='Дата публикации')
     user = models.ForeignKey(User, related_name='mount_user', on_delete=models.CASCADE, verbose_name='Автор')
-    coord_id = models.OneToOneField(Coords, related_name='mount_coord', on_delete=models.CASCADE, verbose_name='Координаты')
+    coord = models.OneToOneField(Coords, related_name='mount_coord', on_delete=models.CASCADE, verbose_name='Координаты')
     status = models.CharField(max_length=2, choices=STATUS_CHOICES, default='NW', verbose_name='Статус')
     level = models.ForeignKey(DifficultyLevel, on_delete=models.CASCADE, verbose_name='Уровень сложности')
 
     def __str__(self):
-        return f"{self.pk}- {self.beauty_title}"
+        return f"{self.pk} - {self.beauty_title}"
 
 class Images(models.Model):
-    mount = models.ForeignKey(AddMount, on_delete=models.CASCADE, related_name='image_mount', null=True, blank=True, verbose_name='Фото перевала')
-    title = models.CharField(max_length=100, blank=True, null=True, verbose_name="Название")
-    images = models.ImageField(upload_to='photos/%Y/%m/%d', blank=True, null=True, verbose_name="Фото")
+    mount = models.ForeignKey(AddMount, on_delete=models.CASCADE, related_name='images', null=True, blank=True, verbose_name='Фото перевала')
+    title = models.CharField(max_length=100, null=True, blank=True, verbose_name="Название")
+    image = models.ImageField(upload_to='photos/%Y/%m/%d', null=True, blank=True, verbose_name="Фото")
 
     def __str__(self):
-        return f"Фото: {self.pk}"
+        return f"Фото: {self.mount}"
