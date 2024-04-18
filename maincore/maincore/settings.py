@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
 from pathlib import Path
+from dotenv import load_dotenv, find_dotenv
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -88,14 +90,16 @@ WSGI_APPLICATION = 'maincore.wsgi.application'
 #     }
 # }
 
+load_dotenv(find_dotenv())
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'sprint_db',
-        'USER': 'stas',
-        'PASSWORD': 'stas',
-        'HOST': '192.168.56.101',
-        'PORT': 5432,
+        'NAME': os.getenv('NAME'),
+        'USER': os.getenv('USER'),
+        'PASSWORD': os.getenv('PASS'),
+        'HOST': os.getenv('HOST'),
+        'PORT': os.getenv('PORT'),
     },
 }
 
