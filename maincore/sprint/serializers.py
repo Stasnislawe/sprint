@@ -73,23 +73,44 @@ class AddMountSerializer(WritableNestedModelSerializer):
 
         read_only_fields = ['status', 'add_time']
 
-        def create(self, validated_data, **kwargs):
-            user = validated_data.pop('user')
-            coord = validated_data.pop('coord')
-            level = validated_data.pop('level')
-            images = validated_data.pop('images')
+    def create(self, validated_data, **kwargs):
+        user = validated_data.pop('user')
+        coord = validated_data.pop('coord')
+        level = validated_data.pop('level')
+        images = validated_data.pop('images')
 
-            user, created = User.objects.get_or_create(**user)
+        user, created = User.objects.get_or_create(**user)
 
-            coord = Coords.objects.create(**coord)
-            level = DifficultyLevel.objects.create(**level)
-            mount = AddMount.objects.create(**validated_data, user=user, coord=coord, level=level, status='new')
+        coord = Coords.objects.create(**coord)
+        level = DifficultyLevel.objects.create(**level)
+        mount = AddMount.objects.create(**validated_data, user=user, coord=coord, level=level, status='new')
 
 
-            for image in images:
-                data = image.pop('image')
-                title = image.pop('title')
-                Images.objects.create(image=data, mount=mount, title=title)
+        for image in images:
+            data = image.pop('image')
+            title = image.pop('title')
+            Images.objects.create(image=data, mount=mount, title=title)
 
-            return mount
+        return mount
+
+    # Запрет изменять данные пользователя при редактировании данных о перевале
+    def validate(self, data):
+
+        if self.instance is not None:
+            instance_user = self.instance.user
+            data_user = data.get('user')
+            validating_user_fields = [
+                instance_user.surname != data_user['surname'],
+                instance_user.name != data_user['name'],
+                instance_user.otc != data_user['otc'],
+                instance_user.phone != data_user['phone'],
+                instance_user.email != data_user['email'],
+            ]
+            if data_user is not None and any(validating_user_fields):
+                raise serializers.ValidationError(
+                    {
+                        'ФИО, email и номер телефона пользователя не могут быть изменены'
+                    }
+                )
+        return data
 
