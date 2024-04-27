@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
 from pathlib import Path
-#from dotenv import load_dotenv, find_dotenv
+from dotenv import load_dotenv, find_dotenv
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-@n7w-sofc36!nfphxa-^*!!nzhn&o5i#lt1bk3a!@(+(-t7i5@
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'stasnislaw.pythonanywhere.com']
+ALLOWED_HOSTS = ['127.0.0.1']
 SITE_URL = 'http://127.0.0.1:8000/'
 SITE_ID = 1
 
@@ -93,16 +93,16 @@ WSGI_APPLICATION = 'maincore.wsgi.application'
 #     }
 # }
 
-#load_dotenv(find_dotenv())
+load_dotenv(find_dotenv())
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'sprint_db',#os.getenv('NAME'),
-        'USER': 'stas',#os.getenv('USER'),
-        'PASSWORD': 'stas',#os.getenv('PASS'),
-        'HOST': '192.168.56.101',#os.getenv('HOST'),
-        'PORT': 5432#os.getenv('PORT'),
+        'NAME': os.getenv('NAME'),
+        'USER': os.getenv('USER'),
+        'PASSWORD': os.getenv('PASS'),
+        'HOST': os.getenv('HOST'),
+        'PORT': os.getenv('PORT'),
     },
 }
 
