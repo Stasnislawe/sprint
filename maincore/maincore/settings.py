@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.flatpages',
     'django_filters',
 
+    'drf_yasg',
+
     'rest_framework',
 
     'sprint'
@@ -98,11 +100,11 @@ load_dotenv(find_dotenv())
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.getenv('NAME'),
-        'USER': os.getenv('USER'),
-        'PASSWORD': os.getenv('PASS'),
-        'HOST': os.getenv('HOST'),
-        'PORT': os.getenv('PORT'),
+        'NAME': os.getenv('FSTR_DB_NAME'),
+        'USER': os.getenv('FSTR_DB_USER'),
+        'PASSWORD': os.getenv('FSTR_DB_PASS'),
+        'HOST': os.getenv('FSTR_DB_HOST'),
+        'PORT': os.getenv('FSTR_DB_PORT'),
     },
 }
 
